@@ -21,10 +21,9 @@ function [trial, saccades] = analyzeMicroSaccades(trial, saccades)
     %% get onsets and offsets   
     trial.microSaccades.X.onsets = sort([trial.saccades.X.fixOnsets; trial.microSaccades.X.onsets]);
     trial.microSaccades.Y.onsets = sort([trial.saccades.Y.fixOnsets; trial.microSaccades.Y.onsets]);
-    trial.microSaccades.onsets = [trial.microSaccades.X.onsets; trial.microSaccades.Y.onsets];
+    
     trial.microSaccades.X.offsets = sort([trial.saccades.X.fixOffsets; trial.microSaccades.X.offsets]);
     trial.microSaccades.Y.offsets = sort([trial.saccades.Y.fixOffsets; trial.microSaccades.Y.offsets]);
-    trial.microSaccades.offsets = [trial.microSaccades.X.offsets; trial.microSaccades.Y.offsets];
 
     %% calculate saccade amplitudes
     % if there are no y-microSaccades, use x and y position of x microSaccades
@@ -130,6 +129,6 @@ function [trial, saccades] = analyzeMicroSaccades(trial, saccades)
     trial.microSaccades.X.velocity = [microSaccadesXXvelocity; microSaccadesYXvelocity];
     trial.microSaccades.Y.velocity = [microSaccadesXYvelocity; microSaccadesYYvelocity];
            
-    trial.microSaccades.velocities = sqrt(trial.microSaccades.X.velocity.^2 + trial.microSaccades.Y.velocity.^2);
+    trial.microSaccades.velocities = unique(sqrt(trial.microSaccades.X.velocity.^2 + trial.microSaccades.Y.velocity.^2));
          
 end

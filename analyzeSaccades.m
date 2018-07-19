@@ -43,7 +43,7 @@ function [trial, saccades] = analyzeSaccades(trial, saccades, name)
         cy = cy+1;
     end
     
-    %% get onsets and offsets   
+    %% get onsets and offsets for main experiment
     trial.saccades.onsets = [trial.saccades.X.onsets; trial.saccades.Y.onsets];
     trial.saccades.offsets = [trial.saccades.X.offsets; trial.saccades.Y.offsets];
 
@@ -216,7 +216,7 @@ function [trial, saccades] = analyzeSaccades(trial, saccades, name)
     trial.saccades.X.velocity = [saccadesXXvelocity; saccadesYXvelocity];
     trial.saccades.Y.velocity = [saccadesXYvelocity; saccadesYYvelocity];
            
-    trial.saccades.velocities = sqrt(trial.saccades.X.velocity.^2 + trial.saccades.Y.velocity.^2);
+    trial.saccades.velocities = uniqe(sqrt(trial.saccades.X.velocity.^2 + trial.saccades.Y.velocity.^2));
 
     end
 end
