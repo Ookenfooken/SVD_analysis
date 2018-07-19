@@ -77,7 +77,7 @@ currentSubject = currentSubjectPath(end-3:end);
 targetSelectionAdj = [];
 
 errors = load('errors_saccades.csv');
-errorsMS = load('errors_microSaccade.csv');
+errorsMS = load('errors_microSaccades.csv');
 
 %% analyze for each trial
 analyzeTrialSaccade;

@@ -1,4 +1,4 @@
-%% Main Data Analysis for Baseball Testing 2013/2014
+%% Automatic analysis for eye movement test battery
 %  Always update at the same time as viewEyeData!!!
 %% General definitions of the set up here!
 sampleRate = 1000;
@@ -11,8 +11,12 @@ distance = 83.5;
 saccadeThreshold = 30; %threshold for saccade sensitivity
 microSaccadeThreshold = 5;
 %% chose patients or controls here
+choice = questdlg('Which subject group do you want to analyze?', ...
+	'subject type', ...
+	'patients','controls', 'patients');
+population = choice;
 analysisPath = pwd;
-dataPath = fullfile(pwd, '..','data\controls\');
+dataPath = fullfile(pwd, '..','data\' , population);
 %% select eye movement battery to run through
 str = {'anti saccade', 'pro saccade', '1 minute saccades', 'smooth purusit', 'predictive pursuit'};
 
@@ -22,22 +26,22 @@ str = {'anti saccade', 'pro saccade', '1 minute saccades', 'smooth purusit', 'pr
 
 if s == 1 
     dataPath = fullfile(dataPath, 'antiSac_data\');
-    name = 'antiSaccade';
+    name = 'antiSaccade\';
 elseif s == 2
     dataPath = fullfile(dataPath, 'proSac_data\');
-    name = 'proSaccade';
+    name = 'proSaccade\';
 elseif s == 3
     dataPath = fullfile(dataPath, 'saccade_data\');
-    name = 'minuteSaccade';
+    name = 'minuteSaccade\';
 elseif s == 4
     dataPath = fullfile(dataPath, 'pursuit_data\');
-    name = 'smoothPursuit';
+    name = 'smoothPursuit\';
 else
     dataPath = fullfile(dataPath, 'predict_pursuit_data\');
-    name = 'predictivePursuit';
+    name = 'predictivePursuit\';
 end  
 
-resultPath = fullfile(pwd, name, '\controls');
+resultPath = fullfile(pwd, name, population);
 %% create list of all subjects
 folderNames = dir(dataPath);
 currentSubject = {};
@@ -62,17 +66,19 @@ for i = 3:length(folderNames)
        targetSelectionAdj = []; 
     end
     load('targetOnset.mat');
-    % for reading out pro and anti saccade tasks uncomment here
-    load('saccadeTarget.mat');
-    % go into analysis folder
-    cd(analysisPath)
-    % for reading out the minut saccade uncomment here
-    % saccadeTarget = load('saccadeTarget.mat');
-    
-    % Ich bin in einem Folder drin. Loope ueber trials
-    %% analyze for each trial
+    % for pro and anti saccade
+    if strcmp(name, 'antiSaccade\') || strcmp(name, 'proSaccade\')
+        load('saccadeTarget.mat');
+    elseif strcmp(name, 'minuteSaccade\')
+        % for minut saccade test
+        cd(analysisPath)
+        saccadeTarget = load('saccadeTarget.mat');
+        cd(currentFolder)
+    end
+
+    % I'm inside the subject folder and can now loop over all trials
+    % analyze for each trial
     for currentTrial = 1:numTrials
-    % for currentTrial = 1:27 % this is for baseline trials only
         [results.trial] = automaticAnalysisSaccade(eyeFiles, currentTrial, currentSubject{i-2}, analysisPath, dataPath, targetOnset, saccadeTarget, targetSelectionAdj);
         analysisResults(:,currentTrial) = results;
     end

@@ -37,7 +37,7 @@ for j = 3:length(allResults)
     % flag the trials that had blinks
     flagged = zeros(numTrials,1);
     idx = find((errorsProSaccade_controls(:,3) == currentSubject));
-    flagged(errorList(idx,4)) = 1;
+    flagged(errorsProSaccade_controls(idx,4)) = 1;
         
     % loop over trials
     for i = 1:numTrials
@@ -148,7 +148,7 @@ for j = 3:length(allResults)
     % flag the trials that had blinks
     flagged = zeros(numTrials,1);
     idx = find((errorsProSaccade_patients(:,3) == currentSubject));
-    flagged(errorList(idx,4)) = 1;
+    flagged(errorsProSaccade_patients(idx,4)) = 1;
     
     % loop over trials
     for i = 1:numTrials
