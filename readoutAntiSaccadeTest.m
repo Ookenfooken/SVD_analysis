@@ -1,5 +1,6 @@
 %% define data home base
 analysisPath = pwd;
+savePath = fullfile(pwd, 'resultFiles');
 errorList = load('errors_saccades.csv');
 errorsAntiSaccade = errorList(errorList(:,2) == 2, :);
 
@@ -142,8 +143,10 @@ for j = 3:length(allResults)
     numTrials = length(block);    
     
     % initiate conditions and experimental factors
+    % initiate conditions and experimental factors   
+    currentSubject = str2double(selectedResult{j-2}(2:4));
     patient = ones(numTrials,1);
-    subject = (j-2)*ones(numTrials,1);
+    subject = currentSubject*ones(numTrials,1);
     % initiate saccade parameters
     task = NaN(numTrials,1);
     latency = NaN(numTrials,1);
@@ -199,7 +202,7 @@ end
 cd(analysisPath);
 
 %% zScore patient data
-patients = patients(patients(:,1) == 1, :);
+patients = patients(patients(:,1) == 0, :);
 
 latency = patients(:,5);
 latIdx = isnan(latency);
@@ -245,7 +248,8 @@ clear accuracy_x accxIdx zScore_acxc accuracy_y accyIdx zScore_accy
 clear resultPath allResults numResults selectedResult 
 
 %% Now combine the 2 results and save data
-
+cd(savePath)
 antiSaccadeResults = [controls; patients];
 save('antiSaccadeResults', 'antiSaccadeResults')
 csvwrite('antiSaccadeResults.csv', antiSaccadeResults)
+cd(analysisPath)

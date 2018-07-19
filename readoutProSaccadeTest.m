@@ -1,5 +1,6 @@
 %% define data home base
 analysisPath = pwd;
+savePath = fullfile(pwd, 'resultFiles');
 errorList = load('errors_saccades.csv');
 errorsProSaccade = errorList(errorList(:,2) == 1, :);
 
@@ -228,7 +229,8 @@ clear velocity velIdx zScore_vel
 clear resultPath allResults numResults selectedResult  
 
 %% Now combine the 2 results and save data
-
+cd(savePath)
 proSaccadeResults = [controls; patients];
 save('proSaccadeResults', 'proSaccadeResults')
 csvwrite('proSaccadeResults.csv', proSaccadeResults)
+cd(analysisPath)
