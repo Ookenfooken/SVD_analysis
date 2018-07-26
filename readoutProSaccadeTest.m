@@ -14,7 +14,7 @@ numResults = length(allResults)-2;
 selectedResult = cell(numResults,1);
 controls = [];
 
-% loop over all participants
+% loop over all control participants
 for j = 3:length(allResults)    
     % load data
     selectedResult{j-2} = allResults(j).name;    
@@ -125,7 +125,7 @@ numResults = length(allResults)-2;
 selectedResult = cell(numResults,1);
 patients = [];
 
-% loop over all participants
+% loop over all patient participants
 for j = 3:length(allResults)    
     % load data
     selectedResult{j-2} = allResults(j).name;    
