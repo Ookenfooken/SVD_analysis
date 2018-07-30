@@ -9,20 +9,24 @@ results are separated into "micro-saccades" (any saccade with an amplitude < 3 d
 2. column - subjectID: 
 This doesn't correspond to the full subject ID. We are reading out the last 2 digits of the subject ID
 
-3. column
+3. column - task:
+1 --> pro saccade
+2 --> anti saccade
+
+4. column
 micro saccade number
 
-4. column 
+5. column 
 micro saccade total amplitdue
 
-5. column 
+6. column 
 micro saccade mean amplitude
 
-6. column 
+7. column 
 larger saccade number
 
-7. column 
+8. column 
 larger saccade total amplitude
 
-8. column 
+9. column 
 larger saccade mean amplitdue
