@@ -285,7 +285,7 @@ for j = 3:length(allResults)
     
     % initiate conditions and experimental factors
     currentSubject = str2double(selectedResult{j-2}(2:4));
-    patient = zeros(numTrials,1);
+    patient = ones(numTrials,1);
     subject = currentSubject*ones(numTrials,1);
     task = ones(numTrials,1);
     % initiate saccade parameters
@@ -414,7 +414,7 @@ for j = 3:length(allResults)
     
     % initiate conditions and experimental factors
     currentSubject = str2double(selectedResult{j-2}(2:4));
-    patient = zeros(numTrials,1);
+    patient = ones(numTrials,1);
     subject = currentSubject*ones(numTrials,1);
     task = 2*ones(numTrials,1);
     % initiate saccade parameters
