@@ -24,6 +24,9 @@ function [trial, saccades] = analyzeMicroSaccades(trial, saccades)
     
     trial.microSaccades.X.offsets = sort([trial.saccades.X.fixOffsets; trial.microSaccades.X.offsets]);
     trial.microSaccades.Y.offsets = sort([trial.saccades.Y.fixOffsets; trial.microSaccades.Y.offsets]);
+    
+    trial.microSaccades.onsets = [trial.saccades.X.onsets; trial.saccades.Y.onsets];
+    trial.microSaccades.offsets = [trial.saccades.X.offsets; trial.saccades.Y.offsets];
 
     %% calculate saccade amplitudes
     % if there are no y-microSaccades, use x and y position of x microSaccades
