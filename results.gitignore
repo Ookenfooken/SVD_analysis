@@ -1,0 +1,8 @@
+$ git status
+    [...]
+    # Untracked files:
+    [...]
+    #       antiSaccade/
+    #       minuteSaccade/
+    #       proSaccade/
+	#		resultFiles/
