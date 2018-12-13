@@ -1,0 +1,13 @@
+$ git status
+    [...]
+    # Untracked files:
+    [...]
+    #       antiSaccade/
+    #       minuteSaccade/
+    #       proSaccade/
+	#		resultFiles/
+	$ cat antiSaccade/.gitignore
+	$ cat minuteSaccade/.gitignore
+	$ cat proSaccade/.gitignore
+	$ cat resultFiles/.gitignore
+	
