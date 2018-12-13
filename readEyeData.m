@@ -28,5 +28,7 @@ function [eyeData] = readEyeData(ascFile, dataPath, currentSubject, analysisPath
     eyeData.rawX = eyeDataX;
     eyeData.rawY = eyeDataY;
     
+    eyeData.timeStamp = allData(:,1);
+    
 end
 

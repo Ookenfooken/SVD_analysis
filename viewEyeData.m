@@ -63,12 +63,19 @@ eyeFiles = dir('*.asc');
 matFiles = dir('*.mat');
 % targetInfo = matFiles(1).name;
 % targetInfo = load(targetInfo);
-load('targetOnset.mat');
+
 if strcmp(name, 'minuteSaccade')
+    load('targetOnset.mat');
     cd(analysisPath);
     saccadeTarget = load('saccadeTarget.mat');
-else
+elseif strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
+    load('targetOnset.mat');
     load('saccadeTarget.mat');
+    cd(analysisPath);
+    errors = load('errors_saccades.csv');
+    errorsMS = load('errors_microSaccades.csv');
+elseif strcmp(name, 'smoothPursuit')
+    load('targetPosition.mat');
     cd(analysisPath);
 end
 
@@ -76,18 +83,18 @@ end
 currentSubject = currentSubjectPath(end-3:end);
 targetSelectionAdj = [];
 
-errors = load('errors_saccades.csv');
-errorsMS = load('errors_microSaccades.csv');
-
-%% analyze for each trial
-analyzeTrialSaccade;
-
 %% open window to plot in
 screenSize = get(0,'ScreenSize');
 close all;
 fig = figure('Position', [25 50 screenSize(3)-100, screenSize(4)-150],'Name','View eye movement data');
 
-plotResultsSaccade;
+%% analyze and plot for each trial
+if strcmp(name, 'minuteSaccade') || strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
+    analyzeTrialSaccade;
+    plotResultsSaccade;
+elseif strcmp(name, 'smoothPursuit')
+    analyzeTrialPursuit;
+end
 
 
 buttons.previous = uicontrol(fig,'string','<< Previous','Position',[0,50,100,30],...
