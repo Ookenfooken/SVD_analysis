@@ -34,4 +34,7 @@ targetXY = pixels2degrees(target.Xpixel, target.Ypixel);
 target.Xdeg = [zeros(onset,1); targetXY.degX; zeros(trialLength-offset,1)];
 target.Ydeg = [zeros(onset,1); targetXY.degY; zeros(trialLength-offset,1)];
 
+target.Xvel = [zeros(onset,1); diff(targetXY.degX)*sampleRate; zeros(trialLength-offset+1,1)];
+target.Yvel = [zeros(onset,1); diff(targetXY.degY)*sampleRate; zeros(trialLength-offset+1,1)];
+
 end

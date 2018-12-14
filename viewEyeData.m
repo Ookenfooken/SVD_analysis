@@ -90,27 +90,33 @@ fig = figure('Position', [25 50 screenSize(3)-100, screenSize(4)-150],'Name','Vi
 set(fig,'defaultLegendAutoUpdate','off');
 
 %% analyze and plot for each trial
-if strcmp(name, 'minuteSaccade') || strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
+if xor(strcmp(name, 'antiSaccade'), strcmp(name, 'proSaccade'))
+    analyzeTrialSaccade;
+    plotResultsSaccade;
+    buttons.discardMS = uicontrol(fig,'string','Discard Micro-Sac','Position',[screenSize(3)-220,250,100,30],...
+        'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; markErrorMicroSaccade');
+    
+    buttons.changeType = uicontrol(fig,'string','change trial type','Position',[10,200,100,30],...
+        'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; changeTrialType');
+    
+    buttons.previous = uicontrol(fig,'string','<< Previous','Position',[0,50,100,30],...
+        'callback','clc; currentTrial = max(currentTrial-1,1);analyzeTrialSaccade;plotResultsSaccade');
+    
+    buttons.next = uicontrol(fig,'string','Next (0) >>','Position',[0,85,100,30],...
+        'callback','clc; currentTrial = currentTrial+1;analyzeTrialSaccade;plotResultsSaccade;finishButton');
+    
+    buttons.discardTrial = uicontrol(fig,'string','!Discard Trial!','Position',[20,700,100,30],...
+        'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; markErrorSaccade');
+    
+elseif strcmp(name, 'minuteSaccade')
     analyzeTrialSaccade;
     plotResultsSaccade;
 elseif strcmp(name, 'smoothPursuit')
     analyzeTrialPursuit;
+    plotResultsSaccade;
 end
 
 
-buttons.previous = uicontrol(fig,'string','<< Previous','Position',[0,50,100,30],...
-    'callback','clc; currentTrial = max(currentTrial-1,1);analyzeTrialSaccade;plotResultsSaccade');
-
-buttons.next = uicontrol(fig,'string','Next (0) >>','Position',[0,85,100,30],...
-    'callback','clc; currentTrial = currentTrial+1;analyzeTrialSaccade;plotResultsSaccade;finishButton');
-
-buttons.discardTrial = uicontrol(fig,'string','!Discard Trial!','Position',[20,700,100,30],...
-    'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; markErrorSaccade');
-buttons.discardMS = uicontrol(fig,'string','Discard Micro-Sac','Position',[screenSize(3)-220,250,100,30],...
-    'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; markErrorMicroSaccade');
-
-buttons.changeType = uicontrol(fig,'string','change trial type','Position',[10,200,100,30],...
-    'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; changeTrialType');
 
 
 
