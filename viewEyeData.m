@@ -87,6 +87,7 @@ targetSelectionAdj = [];
 screenSize = get(0,'ScreenSize');
 close all;
 fig = figure('Position', [25 50 screenSize(3)-100, screenSize(4)-150],'Name','View eye movement data');
+set(fig,'defaultLegendAutoUpdate','off');
 
 %% analyze and plot for each trial
 if strcmp(name, 'minuteSaccade') || strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')

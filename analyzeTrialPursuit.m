@@ -4,7 +4,7 @@
 %  first step: read in converted eye data
 ascFile = eyeFiles(currentTrial,1).name;
 eyeData = readEyeData(ascFile, dataPath, currentSubject, analysisPath);
-eyeData = processEyeDataSaccade(eyeData, str2double(ascFile(end-5:end-4)), targetOnset); % equivalent to socscalexy
+eyeData = processEyeData(eyeData); % equivalent to socscalexy
 
 %% Target data
 % set up target file
