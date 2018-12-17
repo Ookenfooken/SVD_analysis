@@ -38,23 +38,23 @@ trial.saccades.allOffsets = [trial.saccades.X.offsets; trial.saccades.Y.offsets]
 blinkIdx = ones(length(trial.saccades.allOnsets),1);
 if sum(trial.target.Y) == 0
     for i = 1:length(trial.saccades.allOnsets)
-        if max(abs(trial.eye.DY_filt(trial.saccades.onsets(i):trial.saccades.offsets(i)))) > 25
+        if max(abs(trial.eye.DY_filt(trial.saccades.allOnsets(i):trial.saccades.allOffsets(i)))) > 75
             blinkIdx(i,1) = 0;
         end
     end
 elseif sum(trial.target.X) == 0
-    for i = 1:length(trial.saccades.onsets)
-        if max(abs(trial.eye.DX_filt(trial.saccades.onsets(i):trial.saccades.offsets(i)))) > 25
+    for i = 1:length(trial.saccades.allOnsets)
+        if max(abs(trial.eye.DX_filt(trial.saccades.allOnsets(i):trial.saccades.allOffsets(i)))) > 75
             blinkIdx(i,1) = 0;
         end
     end
 end
 trial.saccades.blinkIdx = blinkIdx;
 blinkIdx = logical(blinkIdx);
-trial.saccades.onsets = trial.saccades.onsets(blinkIdx);
-trial.saccades.offsets = trial.saccades.offsets(blinkIdx);
-trial.saccades.blinkOnsets = trial.saccades.onsets(~blinkIdx);
-trial.saccades.blinkOffsets = trial.saccades.offsets(~blinkIdx);
+trial.saccades.onsets = trial.saccades.allOnsets(blinkIdx);
+trial.saccades.offsets = trial.saccades.allOffsets(blinkIdx);
+trial.saccades.blinkOnsets = trial.saccades.allOnsets(~blinkIdx);
+trial.saccades.blinkOffsets = trial.saccades.allOffsets(~blinkIdx);
 trial.saccades.numBlinks = length(trial.saccades.blinkOnsets);
 trial.saccades.numSaccTotal = length(trial.saccades.onsets);
 % calculate saccade amplitudes

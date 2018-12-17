@@ -22,8 +22,13 @@ trial.eye.DDDX = eyeData.DDDX;
 trial.eye.DDDY = eyeData.DDDY;
 
 if strcmp(name, 'smoothPursuit')
-   trial.eye.X_offset = mean(eyeData.X_filt(1:target.onset)); 
-   trial.eye.Y_offset = mean(eyeData.Y_filt(1:target.onset)); 
+    if xor(abs(mean(eyeData.X_filt(1:target.onset))) > 2, abs(mean(eyeData.Y_filt(1:target.onset))) > 2)
+        trial.eye.X_offset = eyeData.X_filt(target.onset);
+        trial.eye.Y_offset = eyeData.Y_filt(target.onset);
+    else
+        trial.eye.X_offset = mean(eyeData.X_filt(1:target.onset));
+        trial.eye.Y_offset = mean(eyeData.Y_filt(1:target.onset));
+    end
 end
 
 trial.eye.X_filt = eyeData.X_filt-trial.eye.X_offset;
@@ -44,6 +49,7 @@ if strcmp(name, 'smoothPursuit')
     trial.target.Yvel = target.Yvel;
     trial.target.Xpix = target.Xpixel;
     trial.target.Ypis = target.Ypixel;
+    trial.target.speed = ceil(max(sqrt(trial.target.Xvel.^2+trial.target.Yvel.^2)));
 end
 
 end

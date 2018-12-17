@@ -113,7 +113,17 @@ elseif strcmp(name, 'minuteSaccade')
     plotResultsSaccade;
 elseif strcmp(name, 'smoothPursuit')
     analyzeTrialPursuit;
-    plotResultsSaccade;
+    plotResultsPursuit;
+    
+    buttons.previous = uicontrol(fig,'string','<< Previous','Position',[0,50,100,30],...
+        'callback','clc; currentTrial = max(currentTrial-1,1);analyzeTrialPursuit;plotResultsPursuit');
+    
+    buttons.next = uicontrol(fig,'string','Next (0) >>','Position',[0,85,100,30],...
+        'callback','clc; currentTrial = currentTrial+1;analyzeTrialPursuit;plotResultsPursuit;finishButton');
+    
+    buttons.discardTrial = uicontrol(fig,'string','!Discard Trial!','Position',[20,700,100,30],...
+        'callback', 'currentTrial = currentTrial;analyzeTrialPursuit;plotResultsPursuit; markErrorPursuit');
+ 
 end
 
 

@@ -9,9 +9,9 @@ currentTrial = trialNo(end-4);
 name = {['trial' currentTrial]};
 currentTarget = targetPosition.(name{1});
 onset = find(eyeData.timeStamp == currentTarget(1,1));
-offset = find(eyeData.timeStamp == currentTarget(end,1));
-targetLength = offset-onset;
 trialLength = size(eyeData.X_filt,1);
+offset = trialLength;
+targetLength = offset-onset;
 
 target.onset = onset;
 target.offset = offset;
