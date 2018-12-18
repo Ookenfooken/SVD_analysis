@@ -50,6 +50,9 @@ if strcmp(name, 'smoothPursuit')
     trial.target.Xpix = target.Xpixel;
     trial.target.Ypis = target.Ypixel;
     trial.target.speed = ceil(max(sqrt(trial.target.Xvel.^2+trial.target.Yvel.^2)));
+    trial.target.maxima = target.cycle.maxima;
+    trial.target.minima = target.cycle.minima;
+    trial.target.crossings = target.cycle.crossing;
 end
 
 end
