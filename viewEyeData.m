@@ -24,7 +24,7 @@ str = {'anti saccade', 'pro saccade', '1 minute saccades', 'smooth purusit', 'pr
 %  the projective are changed. Distance should be fixed, but double
 %  checking doesn't hurt
 currentTrial = 1;
-% % For 2016 EyeStrike testing:
+% % For SVD testing at icord:
 sampleRate = 1000;
 screenSizeX = 40.6;
 screenSizeY = 30.4;
@@ -32,7 +32,7 @@ screenResX = 1600;
 screenResY = 1200;
 distance = 83.5;
 
-saccadeThreshold = 30; %threshold for saccade sensitivity
+saccadeThreshold = 25; %threshold for saccade sensitivity
 microSaccadeThreshold = 5;
 %% Subject selection
 
@@ -55,7 +55,6 @@ else
 end   
 
 currentSubjectPath = selectSubject(dataPath);
-%errors = csvread(['errors' name '.csv']);
 
 cd(currentSubjectPath);
 numTrials = length(dir('*.asc'));
@@ -77,6 +76,7 @@ elseif strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
 elseif strcmp(name, 'smoothPursuit')
     load('targetPosition.mat');
     cd(analysisPath);
+    errors = load('errors_pursuit.csv');
 end
 
 
@@ -87,29 +87,46 @@ targetSelectionAdj = [];
 screenSize = get(0,'ScreenSize');
 close all;
 fig = figure('Position', [25 50 screenSize(3)-100, screenSize(4)-150],'Name','View eye movement data');
+set(fig,'defaultLegendAutoUpdate','off');
 
 %% analyze and plot for each trial
-if strcmp(name, 'minuteSaccade') || strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
+if xor(strcmp(name, 'antiSaccade'), strcmp(name, 'proSaccade'))
+    analyzeTrialSaccade;
+    plotResultsSaccade;
+    buttons.discardMS = uicontrol(fig,'string','Discard Micro-Sac','Position',[screenSize(3)-220,250,100,30],...
+        'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; markErrorMicroSaccade');
+    
+    buttons.changeType = uicontrol(fig,'string','change trial type','Position',[10,200,100,30],...
+        'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; changeTrialType');
+    
+    buttons.previous = uicontrol(fig,'string','<< Previous','Position',[0,50,100,30],...
+        'callback','clc; currentTrial = max(currentTrial-1,1);analyzeTrialSaccade;plotResultsSaccade');
+    
+    buttons.next = uicontrol(fig,'string','Next (0) >>','Position',[0,85,100,30],...
+        'callback','clc; currentTrial = currentTrial+1;analyzeTrialSaccade;plotResultsSaccade;finishButton');
+    
+    buttons.discardTrial = uicontrol(fig,'string','!Discard Trial!','Position',[20,700,100,30],...
+        'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; markErrorSaccade');
+    
+elseif strcmp(name, 'minuteSaccade')
     analyzeTrialSaccade;
     plotResultsSaccade;
 elseif strcmp(name, 'smoothPursuit')
     analyzeTrialPursuit;
+    plotResultsPursuit;
+    
+    buttons.previous = uicontrol(fig,'string','<< Previous','Position',[0,50,100,30],...
+        'callback','clc; currentTrial = max(currentTrial-1,1);analyzeTrialPursuit;plotResultsPursuit');
+    
+    buttons.next = uicontrol(fig,'string','Next (0) >>','Position',[0,85,100,30],...
+        'callback','clc; currentTrial = currentTrial+1;analyzeTrialPursuit;plotResultsPursuit;finishButton');
+    
+    buttons.discardTrial = uicontrol(fig,'string','!Discard Trial!','Position',[20,700,100,30],...
+        'callback', 'currentTrial = currentTrial;analyzeTrialPursuit;plotResultsPursuit; markErrorPursuit');
+ 
 end
 
 
-buttons.previous = uicontrol(fig,'string','<< Previous','Position',[0,50,100,30],...
-    'callback','clc; currentTrial = max(currentTrial-1,1);analyzeTrialSaccade;plotResultsSaccade');
-
-buttons.next = uicontrol(fig,'string','Next (0) >>','Position',[0,85,100,30],...
-    'callback','clc; currentTrial = currentTrial+1;analyzeTrialSaccade;plotResultsSaccade;finishButton');
-
-buttons.discardTrial = uicontrol(fig,'string','!Discard Trial!','Position',[20,700,100,30],...
-    'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; markErrorSaccade');
-buttons.discardMS = uicontrol(fig,'string','Discard Micro-Sac','Position',[screenSize(3)-220,250,100,30],...
-    'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; markErrorMicroSaccade');
-
-buttons.changeType = uicontrol(fig,'string','change trial type','Position',[10,200,100,30],...
-    'callback', 'currentTrial = currentTrial;analyzeTrialSaccade;plotResultsSaccade; changeTrialType');
 
 
 

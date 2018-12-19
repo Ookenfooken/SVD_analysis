@@ -8,8 +8,8 @@ function [eyeData] = processEyeData(eyeData)
 sampleRate = 1000;
 filtFrequency = sampleRate/2;
 filtOrder = 2;
-filtCutoffPosition = 15;
-filtCutoffVelocity = 30;
+filtCutoffPosition = 10;
+filtCutoffVelocity = 20;
 
 [a,b] = butter(filtOrder,filtCutoffPosition/filtFrequency);
 [c,d] = butter(filtOrder,filtCutoffVelocity/filtFrequency);

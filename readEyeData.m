@@ -20,10 +20,10 @@ function [eyeData] = readEyeData(ascFile, dataPath, currentSubject, analysisPath
     
     cd(analysisPath);
 
-    eyeData = pixels2degrees(eyeDataTempX, eyeDataTempY);
+    eyeDataXY = pixels2degrees(eyeDataTempX, eyeDataTempY);
 
-    eyeData.X = eyeData.degX;
-    eyeData.Y = eyeData.degY;
+    eyeData.X = eyeDataXY.degX;
+    eyeData.Y = eyeDataXY.degY;
     
     eyeData.rawX = eyeDataX;
     eyeData.rawY = eyeDataY;

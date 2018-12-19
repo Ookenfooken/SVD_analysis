@@ -4,34 +4,28 @@
 %  first step: read in converted eye data
 ascFile = eyeFiles(currentTrial,1).name;
 eyeData = readEyeData(ascFile, dataPath, currentSubject, analysisPath);
-eyeData = processEyeDataSaccade(eyeData, str2double(ascFile(end-5:end-4)), targetOnset); % equivalent to socscalexy
+eyeData = processEyeData(eyeData); % equivalent to socscalexy
 
 %% Target data
 % set up target file
 target = createTargetData(targetPosition, ascFile, eyeData);
 
 %% setup trial
-trial = readoutTrialPursuit(ascFile, eyeData, currentSubject, targetOnset, saccadeTarget); 
+trial = readoutTrialPursuit(ascFile, eyeData, currentSubject, target); 
 
 %% find saccades
-threshold = evalin('base', 'saccadeThreshold');
-[saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, trial.length, trial.eyeDX_filt, trial.eyeDDX_filt, threshold, 0);
-[saccades.Y.onsets, saccades.Y.offsets, saccades.Y.isMax] = findSaccades(1, trial.length, trial.eyeDY_filt, trial.eyeDDY_filt, threshold, 0);
-
+thresholdMoveDirection = evalin('base', 'saccadeThreshold');
+thresholdZero = evalin('base', 'microSaccadeThreshold');
+if sum(trial.target.X) == 0
+    [saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, trial.length, trial.eye.DX_filt, trial.eye.DDX_filt, thresholdZero, trial.target.Xvel);
+    [saccades.Y.onsets, saccades.Y.offsets, saccades.Y.isMax] = findSaccades(1, trial.length, trial.eye.DY_filt, trial.eye.DDY_filt, thresholdMoveDirection, trial.target.Yvel);
+elseif sum(trial.target.Y) == 0
+    [saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, trial.length, trial.eye.DX_filt, trial.eye.DDX_filt, thresholdMoveDirection, trial.target.Xvel);
+    [saccades.Y.onsets, saccades.Y.offsets, saccades.Y.isMax] = findSaccades(1, trial.length, trial.eye.DY_filt, trial.eye.DDY_filt, thresholdZero, trial.target.Yvel);
+end
 %% analyze saccades
-[trial] = analyzeSaccades(trial, saccades, name);
+[trial] = analyzeSaccadesPursuit(trial, saccades);
 
 clear saccades;
-%% remove saccades
-% option to remove large saccades during fixation period 
-if ~strcmp(name, 'minuteSaccade')
-    trial = removeSaccades(trial);
-    %% fi-saccades
-    m_threshold = evalin('base', 'microSaccadeThreshold');
-    [saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, targetOnset(currentTrial)-50, trial.DX_noSac, trial.DDX_noSac, m_threshold, 0);
-    [saccades.Y.onsets, saccades.Y.offsets, saccades.Y.isMax] = findSaccades(1, targetOnset(currentTrial)-50, trial.DY_noSac, trial.DDY_noSac, m_threshold, 0);
-    %% analyze micro-saccades
-    [trial] = analyzeMicroSaccades(trial, saccades);
-    
-    clear saccades;
-end
+%% remove saccades (include blinks
+trial = removeBlinksSaccades(trial);

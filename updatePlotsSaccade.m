@@ -20,7 +20,7 @@ if strcmp(name, 'minuteSaccade')
     
     line([trial.log.targetOnset trial.log.targetOnset], [-10 10],'Color','k','LineStyle',':');
     line([trial.length trial.length], [-10 10],'Color','k','LineStyle',':'); 
-    
+       
      %% velocity plot
     subplot(2,1,2,'replace');
     axis([startFrame endFrame -150 150]);
