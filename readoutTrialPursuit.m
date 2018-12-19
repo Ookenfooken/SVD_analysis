@@ -31,8 +31,8 @@ if strcmp(name, 'smoothPursuit')
     end
 end
 
-trial.eye.X_filt = eyeData.X_filt-trial.eye.X_offset;
-trial.eye.Y_filt = eyeData.Y_filt- trial.eye.Y_offset;
+trial.eye.X_filt = eyeData.X_filt;%-trial.eye.X_offset;
+trial.eye.Y_filt = eyeData.Y_filt;%- trial.eye.Y_offset;
 
 %% read log info   
 trial.log.subject = currentSubject;

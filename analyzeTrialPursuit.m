@@ -14,10 +14,15 @@ target = createTargetData(targetPosition, ascFile, eyeData);
 trial = readoutTrialPursuit(ascFile, eyeData, currentSubject, target); 
 
 %% find saccades
-threshold = evalin('base', 'saccadeThreshold');
-[saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, trial.length, trial.eye.DX_filt, trial.eye.DDX_filt, threshold, trial.target.Xvel);
-[saccades.Y.onsets, saccades.Y.offsets, saccades.Y.isMax] = findSaccades(1, trial.length, trial.eye.DY_filt, trial.eye.DDY_filt, threshold, trial.target.Yvel);
-
+thresholdMoveDirection = evalin('base', 'saccadeThreshold');
+thresholdZero = evalin('base', 'microSaccadeThreshold');
+if sum(trial.target.X) == 0
+    [saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, trial.length, trial.eye.DX_filt, trial.eye.DDX_filt, thresholdZero, trial.target.Xvel);
+    [saccades.Y.onsets, saccades.Y.offsets, saccades.Y.isMax] = findSaccades(1, trial.length, trial.eye.DY_filt, trial.eye.DDY_filt, thresholdMoveDirection, trial.target.Yvel);
+elseif sum(trial.target.Y) == 0
+    [saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, trial.length, trial.eye.DX_filt, trial.eye.DDX_filt, thresholdMoveDirection, trial.target.Xvel);
+    [saccades.Y.onsets, saccades.Y.offsets, saccades.Y.isMax] = findSaccades(1, trial.length, trial.eye.DY_filt, trial.eye.DDY_filt, thresholdZero, trial.target.Yvel);
+end
 %% analyze saccades
 [trial] = analyzeSaccadesPursuit(trial, saccades);
 

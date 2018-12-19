@@ -24,7 +24,7 @@ str = {'anti saccade', 'pro saccade', '1 minute saccades', 'smooth purusit', 'pr
 %  the projective are changed. Distance should be fixed, but double
 %  checking doesn't hurt
 currentTrial = 1;
-% % For 2016 EyeStrike testing:
+% % For SVD testing at icord:
 sampleRate = 1000;
 screenSizeX = 40.6;
 screenSizeY = 30.4;
@@ -32,7 +32,7 @@ screenResX = 1600;
 screenResY = 1200;
 distance = 83.5;
 
-saccadeThreshold = 30; %threshold for saccade sensitivity
+saccadeThreshold = 25; %threshold for saccade sensitivity
 microSaccadeThreshold = 5;
 %% Subject selection
 
@@ -55,7 +55,6 @@ else
 end   
 
 currentSubjectPath = selectSubject(dataPath);
-%errors = csvread(['errors' name '.csv']);
 
 cd(currentSubjectPath);
 numTrials = length(dir('*.asc'));
@@ -77,6 +76,7 @@ elseif strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
 elseif strcmp(name, 'smoothPursuit')
     load('targetPosition.mat');
     cd(analysisPath);
+    errors = load('errors_pursuit.csv');
 end
 
 

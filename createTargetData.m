@@ -18,6 +18,7 @@ target.offset = offset;
 
 % generate target data in the same time framze as eye movement data
 frequency = targetPosition.frequency(str2double(trialNo(end-4)));
+%frequency = 1;
 amplitude = 400; %in pixels
 t = 0:1/sampleRate:targetLength/sampleRate-0.001;
 if str2double(currentTrial) < 3
@@ -47,7 +48,7 @@ end
 
 crossing = target.onset;
 extrema = sort([target.cycle.maxima; target.cycle.minima]);
-for i = 2:10
+for i = 2:length(extrema)
    crossing(i) = crossing(i-1) + (extrema(i) - extrema(i-1)); 
 end
 target.cycle.crossing = crossing; 
