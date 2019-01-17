@@ -4,8 +4,8 @@ close all
 clear all
 %% NEXT TIME FOR CONVERSION CHECK HOW MUCH HEADER SHOULD BE SKIPPED!!! IMPORTANT TO ACTUALLY GET THE RIGHT TARGET INDEX!!!
 startFolder = [pwd '\']; %where is the edf2asc program?
-dataPath = fullfile(pwd,'..','data\controls\temp\');
-%dataPath = 'E:\antiSaccades\';
+%dataPath = fullfile(pwd,'..','data\controls\temp\');
+dataPath = 'C:\Users\Joli\Desktop\temp\pursuit\';
 folderNames = dir(dataPath);
 currentSubject = {};
 

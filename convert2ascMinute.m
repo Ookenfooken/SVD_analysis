@@ -4,8 +4,8 @@ close all
 clear all
 
 startFolder = [pwd '\']; %where is the edf2asc program?
-%dataPath = fullfile(pwd,'..','data\temp\saccade_data\');
-dataPath = 'E:\minuteSaccade\';
+dataPath = fullfile(pwd,'..','data\temp\saccade_data\');
+%dataPath = 'C:\Users\Joli\Desktop\temp\saccade\';
 folderNames = dir(dataPath);
 currentSubject = {};
 
