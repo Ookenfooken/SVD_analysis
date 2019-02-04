@@ -32,7 +32,7 @@ screenResX = 1600;
 screenResY = 1200;
 distance = 83.5;
 
-saccadeThreshold = 25; %threshold for saccade sensitivity
+saccadeThreshold = 30; %threshold for saccade sensitivity
 microSaccadeThreshold = 5;
 %% Subject selection
 

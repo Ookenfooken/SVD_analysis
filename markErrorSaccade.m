@@ -15,12 +15,12 @@ elseif strcmp(name, 'antiSaccade')
 end
 
 fid = fopen([currentSubject 'errors.txt'],'a');
-
-fprintf(fid, char(errorType), 'char');
+errorName = [errorType ' ' num2str(trial.number)];
+fprintf(fid, char(errorName), 'char');
 
 fclose(fid);
 
 cd(analysisPath);
 
-currentError = [patient, testType, str2double(currentSubject(2:4)), trial.number];
+currentError = [patient, testType, str2double(currentSubject(2:3)), trial.number];
 errors = [errors; currentError];
