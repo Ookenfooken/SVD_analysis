@@ -65,14 +65,17 @@ for i = 3:length(folderNames)
     else 
        targetSelectionAdj = []; 
     end
-    load('targetOnset.mat');
-    % for pro and anti saccade
-    if strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
-        load('saccadeTarget.mat');
-    elseif strcmp(name, 'minuteSaccade')
-        % for minut saccade test
-        cd(analysisPath)
+    if strcmp(name, 'minuteSaccade')
+        load('targetOnset.mat');
+        cd(analysisPath);
         saccadeTarget = load('saccadeTarget.mat');
+    elseif strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
+        load('targetOnset.mat');
+        load('saccadeTarget.mat');
+        cd(analysisPath);
+    elseif strcmp(name, 'smoothPursuit')
+        load('targetPosition.mat');
+        cd(analysisPath);
     end
 
     % I'm inside the subject folder and can now loop over all trials

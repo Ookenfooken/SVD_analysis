@@ -28,8 +28,8 @@ trial.saccades.Y.offsets = [];
 sacY = find(saccades.Y.onsets < trial.log.targetOnset);
 if ~isempty(sacY)
     for i = 1:sacY
-        trial.saccades.Y.fixOnsets(i,1) = saccades.X.onsets(i);
-        trial.saccades.Y.fixOffsets(i,1) = saccades.X.offsets(i);
+        trial.saccades.Y.fixOnsets(i,1) = saccades.Y.onsets(i);
+        trial.saccades.Y.fixOffsets(i,1) = saccades.Y.offsets(i);
     end
 else
     sacY = 0;

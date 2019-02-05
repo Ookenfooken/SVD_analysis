@@ -6,7 +6,7 @@ clear all
 %% NEXT TIME FOR CONVERSION CHECK HOW MUCH HEADER SHOULD BE SKIPPED!!! IMPORTANT TO ACTUALLY GET THE RIGHT TARGET INDEX!!!
 startFolder = [pwd '\']; %where is the edf2asc program?
 dataPath = fullfile(pwd,'..','data\patients\proSac_data\');
-%dataPath = 'C:\Users\Joli\Desktop\temp\proSaccade\';
+%dataPath = fullfile(pwd,'..','data\controls\temp\');
 folderNames = dir(dataPath);
 currentSubject = {};
 
