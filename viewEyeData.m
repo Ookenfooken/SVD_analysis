@@ -72,7 +72,7 @@ elseif strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
     load('saccadeTarget.mat');
     cd(analysisPath);
     errors = load('errors_saccades.csv');
-    errorsMS = load('errors_microSaccades.csv');
+    errorsMS = load('errors_microSaccade.csv');
 elseif strcmp(name, 'smoothPursuit')
     load('targetPosition.mat');
     cd(analysisPath);

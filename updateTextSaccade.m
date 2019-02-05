@@ -13,6 +13,7 @@ else
     height = 20;
     textblock = 0;
     
+    direction = NaN;
     if ~isempty(trial.saccades.direction)
         if trial.saccades.direction(1) == 1
             direction = 'right';
