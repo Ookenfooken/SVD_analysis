@@ -1,7 +1,7 @@
 %% define data home base
 analysisPath = pwd;
 savePath = fullfile(pwd, 'resultFiles');
-errorList = load('errors_microSaccades.csv');
+errorList = load('errors_microSaccade.csv');
 
 %% Read out controls 
 errorsMicroSaccade_controls = errorList(errorList(:,1) == 0, :);
