@@ -8,7 +8,7 @@ eyeData = processEyeData(eyeData); % equivalent to socscalexy
 
 %% Target data
 % set up target file
-target = createTargetData(targetPosition, ascFile, eyeData);
+target = createTargetData(targetPosition, ascFile, eyeData, str2double(currentSubject(end-2:end)));
 
 %% setup trial
 trial = readoutTrialPursuit(ascFile, eyeData, currentSubject, target); 
