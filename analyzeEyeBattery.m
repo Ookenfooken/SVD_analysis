@@ -81,7 +81,11 @@ for i = 3:length(folderNames)
     % I'm inside the subject folder and can now loop over all trials
     % analyze for each trial
     for currentTrial = 1:numTrials
-        [results.trial] = automaticAnalysisSaccade(eyeFiles, currentTrial, currentSubject{i-2}, analysisPath, dataPath, targetOnset, saccadeTarget, targetSelectionAdj);
+        if ~strcmp(name, 'smoothPursuit')
+            [results.trial] = automaticAnalysisSaccade(eyeFiles, currentTrial, currentSubject{i-2}, analysisPath, dataPath, targetOnset, saccadeTarget, targetSelectionAdj);
+        else
+            [results.trial] = automaticAnalysisPursuit(eyeFiles, currentTrial, currentSubject{i-2}, analysisPath, dataPath, targetPosition);
+        end
         analysisResults(:,currentTrial) = results;
     end
     

@@ -1,4 +1,4 @@
-%% setup data
+function trial = automaticAnalysisPursuit(eyeFiles, currentTrial, currentSubject, analysisPath, dataPath, targetOnset, saccadeTarget, trialType)
 %% Eye Data
 %  eye data have been converted in readEDF
 %  first step: read in converted eye data
@@ -33,4 +33,4 @@ trial = removeBlinksSaccades(trial);
 
 %% analyze pursuit
 trial = analyzePursuit(trial);
-
+end
