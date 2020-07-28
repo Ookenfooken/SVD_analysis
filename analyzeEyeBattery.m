@@ -52,7 +52,8 @@ for i = 3:length(folderNames)
     currentSubject{i-2} = folderNames(i).name;
     
     currentFolder = [dataPath currentSubject{i-2}];
-    cd(currentFolder);    
+    cd(currentFolder);  
+	% I'm inside the subject folder and can now load relevant files	
     numTrials = length(dir('*.asc'));
     eyeFiles = dir('*.asc');
     matFiles = dir('*.mat');
@@ -65,20 +66,26 @@ for i = 3:length(folderNames)
     else 
        targetSelectionAdj = []; 
     end
-    load('targetOnset.mat');
-    % for pro and anti saccade
-    if strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
-        load('saccadeTarget.mat');
-    elseif strcmp(name, 'minuteSaccade')
-        % for minut saccade test
-        cd(analysisPath)
+     if strcmp(name, 'minuteSaccade')
+        load('targetOnset.mat');
+        cd(analysisPath);
         saccadeTarget = load('saccadeTarget.mat');
+    elseif strcmp(name, 'antiSaccade') || strcmp(name, 'proSaccade')
+        load('targetOnset.mat');
+        load('saccadeTarget.mat');
+        cd(analysisPath);
+    elseif strcmp(name, 'smoothPursuit')
+        load('targetPosition.mat');
+        cd(analysisPath);
     end
 
-    % I'm inside the subject folder and can now loop over all trials
-    % analyze for each trial
+    % loop over all trials analyze for each trial
     for currentTrial = 1:numTrials
-        [results.trial] = automaticAnalysisSaccade(eyeFiles, currentTrial, currentSubject{i-2}, analysisPath, dataPath, targetOnset, saccadeTarget, targetSelectionAdj);
+        [if ~strcmp(name, 'smoothPursuit')
+            [results.trial] = automaticAnalysisSaccade(eyeFiles, currentTrial, currentSubject{i-2}, analysisPath, dataPath, targetOnset, saccadeTarget, targetSelectionAdj);
+        else
+            [results.trial] = automaticAnalysisPursuit(eyeFiles, currentTrial, currentSubject{i-2}, analysisPath, dataPath, targetPosition);
+        end
         analysisResults(:,currentTrial) = results;
     end
     
