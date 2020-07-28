@@ -43,11 +43,12 @@ offsets = NaN(1,length(speedOnsets));
 isMax = NaN(1,length(speedOnsets));
 
 %% find onsets and offsets
-for i = 1:length(speedOnsets)
+onsetLength = min([length(speedOnsets) length(speedOffsets)]);
+for i = 1:onsetLength
     
     % make sure, that there is always both, an onset and an offset
     % otherwise, skip this saccade
-    if speedOnsets(i) < min(signSwitches) || speedOffsets(i) > max(signSwitches)
+    if speedOnsets(i) < min(signSwitches) || speedOffsets(i) > max(signSwitches) 
         continue
     end
     

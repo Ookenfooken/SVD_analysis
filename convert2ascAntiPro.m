@@ -5,8 +5,8 @@ close all
 clear all
 %% NEXT TIME FOR CONVERSION CHECK HOW MUCH HEADER SHOULD BE SKIPPED!!! IMPORTANT TO ACTUALLY GET THE RIGHT TARGET INDEX!!!
 startFolder = [pwd '\']; %where is the edf2asc program?
-dataPath = fullfile(pwd,'..','data\controls\antiSac_data\');
-%dataPath = 'C:\Users\Joli\Desktop\temp\proSaccade\';
+dataPath = fullfile(pwd,'..','data\patients\proSac_data\');
+%dataPath = fullfile(pwd,'..','data\controls\temp\');
 folderNames = dir(dataPath);
 currentSubject = {};
 
@@ -29,11 +29,11 @@ for i = 3:length(folderNames)
         path = fullfile(currentFolder, ascfile);
         fid = fopen(path);
         allEntries = textscan(fid, '%s','delimiter','\n');
-        startLabel = strfind(allEntries{:}, 'MODE RECORD');
+        startLabel = strfind(allEntries{:}, 'FIXATION_DISPLAY');
         header = find(not(cellfun('isempty', startLabel)));
         targetLabel = strfind(allEntries{:}, 'TARGET_DISPLAY');
         onsets = find(not(cellfun('isempty', targetLabel)));
-        onsets = onsets - header;
+        onsets = onsets - header(1);
         if ~isempty(onsets)
             targetOnset(j,1) = onsets(1);
         else

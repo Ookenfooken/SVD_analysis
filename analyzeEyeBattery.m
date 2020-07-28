@@ -66,7 +66,11 @@ for i = 3:length(folderNames)
     else 
        targetSelectionAdj = []; 
     end
+<<<<<<< HEAD
      if strcmp(name, 'minuteSaccade')
+=======
+    if strcmp(name, 'minuteSaccade')
+>>>>>>> 48c75711f058d0ab57dd8147d51f2eca0fed35b3
         load('targetOnset.mat');
         cd(analysisPath);
         saccadeTarget = load('saccadeTarget.mat');
@@ -81,7 +85,11 @@ for i = 3:length(folderNames)
 
     % loop over all trials analyze for each trial
     for currentTrial = 1:numTrials
+<<<<<<< HEAD
         [if ~strcmp(name, 'smoothPursuit')
+=======
+        if ~strcmp(name, 'smoothPursuit')
+>>>>>>> 48c75711f058d0ab57dd8147d51f2eca0fed35b3
             [results.trial] = automaticAnalysisSaccade(eyeFiles, currentTrial, currentSubject{i-2}, analysisPath, dataPath, targetOnset, saccadeTarget, targetSelectionAdj);
         else
             [results.trial] = automaticAnalysisPursuit(eyeFiles, currentTrial, currentSubject{i-2}, analysisPath, dataPath, targetPosition);

@@ -19,20 +19,21 @@ if ~isnan(targetOnset(currentTrial))
     name = evalin('base', 'name');
     [trial] = analyzeSaccadesAutomatic(trial, currentTrial, saccades, name, trialType);
     clear saccades;
-    
-    %% remove saccades
-    % option to remove large saccades during fixation period
-    trial = removeSaccades(trial);
-    
-    %% find micro saccades
-    m_threshold = evalin('base', 'microSaccadeThreshold');
-    [saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, targetOnset(currentTrial)-50, trial.DX_noSac, trial.DDX_noSac, m_threshold, 0);
-    [saccades.Y.onsets, saccades.Y.offsets, saccades.Y.isMax] = findSaccades(1, targetOnset(currentTrial)-50, trial.DY_noSac, trial.DDY_noSac, m_threshold, 0);
-
-    %% analyze micro-saccades
-    [trial] = analyzeMicroSaccades(trial, saccades);
-    
-    clear saccades;
+    if ~strcmp(name, 'minuteSaccade')
+        %% remove saccades
+        % option to remove large saccades during fixation period
+        trial = removeSaccades(trial);
+        
+        %% find micro saccades
+        m_threshold = evalin('base', 'microSaccadeThreshold');
+        [saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, targetOnset(currentTrial)-50, trial.DX_noSac, trial.DDX_noSac, m_threshold, 0);
+        [saccades.Y.onsets, saccades.Y.offsets, saccades.Y.isMax] = findSaccades(1, targetOnset(currentTrial)-50, trial.DY_noSac, trial.DDY_noSac, m_threshold, 0);
+        
+        %% analyze micro-saccades
+        [trial] = analyzeMicroSaccades(trial, saccades);
+        
+        clear saccades;
+    end
 else
     trial = [];
 end

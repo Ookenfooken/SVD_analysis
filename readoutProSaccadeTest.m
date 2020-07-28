@@ -30,6 +30,9 @@ for j = 3:length(allResults)
     task = NaN(numTrials,1);
     latency = NaN(numTrials,1);
     velocity = NaN(numTrials,1);
+    firstAmp = NaN(numTrials,1);
+    cumulative = NaN(numTrials,1);
+    number = NaN(numTrials,1);
     accuracy_abs = NaN(numTrials,1);
     accuracy_x = NaN(numTrials,1);
     accuracy_y = NaN(numTrials,1);
@@ -47,7 +50,10 @@ for j = 3:length(allResults)
             task(i,1) = block(i).trial.saccades.targetSelection;
             % read out saccade parameters
             latency(i,1) = block(i).trial.saccades.latency;
-            velocity(i,1) = max(block(i).trial.saccades.velocities);
+            velocity(i,1) = block(i).trial.saccades.velocities(1);
+            firstAmp(i,1) = block(i).trial.saccades.amplitudes(1);
+            cumulative(i,1) = sum(block(i).trial.saccades.amplitudes);
+            number(i,1) = block(i).trial.saccades.number;
             accuracy_abs(i,1) = block(i).trial.saccades.accuracy;
             if ~isnan(block(i).trial.saccades.accuracy)
                 accuracy_x(i,1) = block(i).trial.saccades.accuracyX;
@@ -61,17 +67,20 @@ for j = 3:length(allResults)
             % read out saccade parameters
             latency(i,1) = NaN;
             velocity(i,1) = NaN;
+            firstAmp(i,1) = NaN;
+            cumulative(i,1) = NaN;
+            number(i,1) = NaN;
             accuracy_abs(i,1) = NaN;
             accuracy_x(i,1) = NaN;
             accuracy_y(i,1) = NaN;
         end
     end
         
-    currentControl = [flagged patient subject task latency velocity accuracy_abs accuracy_x accuracy_y];
+    currentControl = [flagged patient subject task latency velocity firstAmp cumulative number accuracy_abs accuracy_x accuracy_y];
     
     controls = [controls; currentControl];
     
-    clear block patient subject task latency velocity accuracy_abs accuracy_x accuracy_y flagged
+    clear block patient subject task latency velocity firstAmp cumulative number accuracy_abs accuracy_x accuracy_y flagged
 end
 
 cd(analysisPath);
@@ -90,29 +99,48 @@ zScore_vel = zscore(velocity(~isnan(velocity)));
 velocity((zScore_vel > 3 | zScore_vel < -3)) = NaN;
 velocity(velIdx) = NaN;
 
-accuracy_abs = controls(:,7);
+firstAmp = controls(:,7);
+ampIdx = isnan(firstAmp);
+zScore_amp = zscore(firstAmp(~isnan(firstAmp)));
+firstAmp((zScore_amp > 3 | zScore_amp < -3)) = NaN;
+firstAmp(ampIdx) = NaN;
+
+cumulative = controls(:,8);
+cumIdx = isnan(cumulative);
+zScore_cum = zscore(cumulative(~isnan(cumulative)));
+cumulative((zScore_cum > 3 | zScore_cum < -3)) = NaN;
+cumulative(cumIdx) = NaN;
+
+number = controls(:,9);
+numIdx = isnan(number);
+zScore_num = zscore(number(~isnan(number)));
+number((zScore_num > 3 | zScore_num < -3)) = NaN;
+number(numIdx) = NaN;
+
+accuracy_abs = controls(:,10);
 accIdx = isnan(accuracy_abs);
 zScore_acc = zscore(accuracy_abs(~isnan(accuracy_abs)));
 accuracy_abs((zScore_acc > 3 | zScore_acc < -3)) = NaN;
 accuracy_abs(accIdx) = NaN;
 
-accuracy_x = controls(:,8);
+accuracy_x = controls(:,11);
 accxIdx = isnan(accuracy_x);
 zScore_accx = zscore(accuracy_x(~isnan(accuracy_x)));
 accuracy_x((zScore_accx > 3 | zScore_accx < -3)) = NaN;
 accuracy_x(accxIdx) = NaN;
 
-accuracy_y = controls(:,9);
+accuracy_y = controls(:,12);
 accyIdx = isnan(accuracy_y);
 zScore_accy = zscore(accuracy_y(~isnan(accuracy_y)));
 accuracy_y((zScore_accy > 3 | zScore_accy < -3)) = NaN;
 accuracy_y(accyIdx) = NaN;
 
-controls = [controls(:,2:4) latency velocity accuracy_abs accuracy_x accuracy_y];
+controls = [controls(:,2:4) latency velocity firstAmp cumulative number accuracy_abs accuracy_x accuracy_y];
 
 clear latency latIdx zScore_lat accuracy_x accxIdx zScore_accx
+clear cumulative cumIdx zScore_cum number numIdx zScore_num
 clear accuracy_y accyIdx zScore_accy accuracy_abs accIdx zScore_acc 
-clear velocity velIdx zScore_vel
+clear velocity velIdx zScore_vel firstAmp ampIdx zScore_amp
 clear resultPath allResults numResults selectedResult 
 
 %% Read out patients
@@ -141,6 +169,9 @@ for j = 3:length(allResults)
     task = NaN(numTrials,1);
     latency = NaN(numTrials,1);
     velocity = NaN(numTrials,1);
+    firstAmp = NaN(numTrials,1);
+    cumulative = NaN(numTrials,1);
+    number = NaN(numTrials,1);
     accuracy_abs = NaN(numTrials,1);
     accuracy_x = NaN(numTrials,1);
     accuracy_y = NaN(numTrials,1);
@@ -158,7 +189,10 @@ for j = 3:length(allResults)
             task(i,1) = block(i).trial.saccades.targetSelection;
             % read out saccade parameters
             latency(i,1) = block(i).trial.saccades.latency;
-            velocity(i,1) = max(block(i).trial.saccades.velocities);
+            velocity(i,1) = block(i).trial.saccades.velocities(1);
+            firstAmp(i,1) = block(i).trial.saccades.amplitudes(1);
+            cumulative(i,1) = sum(block(i).trial.saccades.amplitudes);
+            number(i,1) = block(i).trial.saccades.number;
             accuracy_abs(i,1) = block(i).trial.saccades.accuracy;
             if ~isnan(block(i).trial.saccades.accuracy)
                 accuracy_x(i,1) = block(i).trial.saccades.accuracyX;
@@ -172,13 +206,16 @@ for j = 3:length(allResults)
             % read out saccade parameters
             latency(i,1) = NaN;
             velocity(i,1) = NaN;
+            firstAmp(i,1) = NaN;
+            cumulative(i,1) = NaN;
+            number(i,1) = NaN;
             accuracy_abs(i,1) = NaN;
             accuracy_x(i,1) = NaN;
             accuracy_y(i,1) = NaN;
         end
     end
     
-    currentPatient = [flagged patient subject task latency velocity accuracy_abs accuracy_x accuracy_y];
+    currentPatient = [flagged patient subject task latency velocity firstAmp cumulative number accuracy_abs accuracy_x accuracy_y];
     
     patients = [patients; currentPatient];
     
@@ -203,29 +240,48 @@ zScore_vel = zscore(velocity(~isnan(velocity)));
 velocity((zScore_vel > 3 | zScore_vel < -3)) = NaN;
 velocity(velIdx) = NaN;
 
-accuracy_abs = patients(:,7);
+firstAmp = patients(:,7);
+ampIdx = isnan(firstAmp);
+zScore_amp = zscore(firstAmp(~isnan(firstAmp)));
+firstAmp((zScore_amp > 3 | zScore_amp < -3)) = NaN;
+firstAmp(ampIdx) = NaN;
+
+cumulative = patients(:,8);
+cumIdx = isnan(cumulative);
+zScore_cum = zscore(cumulative(~isnan(cumulative)));
+cumulative((zScore_cum > 3 | zScore_cum < -3)) = NaN;
+cumulative(cumIdx) = NaN;
+
+number = patients(:,9);
+numIdx = isnan(number);
+zScore_num = zscore(number(~isnan(number)));
+number((zScore_num > 3 | zScore_num < -3)) = NaN;
+number(numIdx) = NaN;
+
+accuracy_abs = patients(:,10);
 accIdx = isnan(accuracy_abs);
 zScore_acc = zscore(accuracy_abs(~isnan(accuracy_abs)));
 accuracy_abs((zScore_acc > 3 | zScore_acc < -3)) = NaN;
 accuracy_abs(accIdx) = NaN;
 
-accuracy_x = patients(:,8);
+accuracy_x = patients(:,11);
 accxIdx = isnan(accuracy_x);
 zScore_accx = zscore(accuracy_x(~isnan(accuracy_x)));
 accuracy_x((zScore_accx > 3 | zScore_accx < -3)) = NaN;
 accuracy_x(accxIdx) = NaN;
 
-accuracy_y = patients(:,9);
+accuracy_y = patients(:,12);
 accyIdx = isnan(accuracy_y);
 zScore_accy = zscore(accuracy_y(~isnan(accuracy_y)));
 accuracy_y((zScore_accy > 3 | zScore_accy < -3)) = NaN;
 accuracy_y(accyIdx) = NaN;
 
-patients = [patients(:,2:4) latency velocity accuracy_abs accuracy_x accuracy_y];
+patients = [patients(:,2:4) latency velocity firstAmp cumulative number accuracy_abs accuracy_x accuracy_y];
 
 clear latency latIdx zScore_lat accuracy_x accxIdx zScore_accx
+clear cumulative cumIdx zScore_cum number numIdx zScore_num
 clear accuracy_y accyIdx zScore_accy accuracy_abs accIdx zScore_acc 
-clear velocity velIdx zScore_vel
+clear velocity velIdx zScore_vel firstAmp ampIdx zScore_amp
 clear resultPath allResults numResults selectedResult  
 
 %% Now combine the 2 results and save data

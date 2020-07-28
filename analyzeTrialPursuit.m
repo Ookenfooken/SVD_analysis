@@ -8,13 +8,13 @@ eyeData = processEyeData(eyeData); % equivalent to socscalexy
 
 %% Target data
 % set up target file
-target = createTargetData(targetPosition, ascFile, eyeData);
+target = createTargetData(targetPosition, ascFile, eyeData, str2double(currentSubject(end-2:end)));
 
 %% setup trial
 trial = readoutTrialPursuit(ascFile, eyeData, currentSubject, target); 
 
 %% find saccades
-thresholdMoveDirection = evalin('base', 'saccadeThreshold');
+thresholdMoveDirection = 10;%evalin('base', 'saccadeThreshold');
 thresholdZero = evalin('base', 'microSaccadeThreshold');
 if sum(trial.target.X) == 0
     [saccades.X.onsets, saccades.X.offsets, saccades.X.isMax] = findSaccades(1, trial.length, trial.eye.DX_filt, trial.eye.DDX_filt, thresholdZero, trial.target.Xvel);
@@ -27,5 +27,10 @@ end
 [trial] = analyzeSaccadesPursuit(trial, saccades);
 
 clear saccades;
+
 %% remove saccades (include blinks
 trial = removeBlinksSaccades(trial);
+
+%% analyze pursuit
+trial = analyzePursuit(trial);
+
